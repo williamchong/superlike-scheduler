@@ -2,8 +2,15 @@ import { Router } from 'express';
 
 const router = Router();
 
-/* GET users listing. */
-router.get('/links', () => {
+router.get('/', () => {
+  //
+});
+
+router.post('/', () => {
+  //
+});
+
+router.patch('/', () => {
   //
 });
 
