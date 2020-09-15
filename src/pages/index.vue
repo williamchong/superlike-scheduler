@@ -26,5 +26,8 @@ export default {
       return this.getUserId;
     },
   },
+  mounted() {
+
+  },
 };
 </script>
