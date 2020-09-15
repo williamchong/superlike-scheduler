@@ -1,6 +1,7 @@
 import { Context } from '@nuxt/types';
 import * as api from '../../util/api';
 import * as types from './mutation-types';
+import * as linkTypes from '../link/mutation-types';
 
 export async function postLoginToken(
   this: Context,
@@ -34,5 +35,5 @@ export async function fetchLoginStatus(this: Context, { commit, dispatch }) {
 export async function userLogout(this: Context, { commit }) {
   await this.$axios.$post(api.getLogoutAPI());
   commit(types.USER_SET_USER_INFO, {});
-  commit(types.LINK_CLEAR_FOR_LOGOUT);
+  commit(`link/${linkTypes.LINK_CLEAR_FOR_LOGOUT}`, null, { root: true });
 }

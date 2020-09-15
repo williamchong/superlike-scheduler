@@ -41,7 +41,10 @@ router.put('/', async (req, res, next) => {
       nextId,
       prevId,
     };
-    await linkCollection.doc(id).create(payload);
+    const batch = db.batch();
+    await batch.create(linkCollection.doc(id), payload);
+    if (prevId) await batch.update(linkCollection.doc(prevId), { nextId: id });
+    await batch.commit();
     res.json(payload);
   } catch (err) {
     next(err);
