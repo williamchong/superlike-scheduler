@@ -13,21 +13,25 @@ export async function addNewLink(
   { commit },
   {
     sourceURL,
+    likee,
     nextId = null,
     prevId = null,
   }: {
     sourceURL: string;
+    likee: string;
     nextId: string | null;
     prevId: string | null;
   }
 ) {
   const { id } = await this.$axios.$put(api.getLinks(), {
     sourceURL,
+    likee,
     nextId,
     prevId,
   });
   const payload = {
     id,
+    likee,
     sourceURL,
     nextId,
     prevId,
@@ -63,4 +67,13 @@ export async function deleteLink(
 ) {
   await this.$axios.$delete(api.getLinkById(id));
   commit(types.LINK_REMOVE_LINK, id);
+}
+
+export async function fetchLinkInfo(
+  this: Context,
+  { commit },
+  { url }: { url: string }
+) {
+  const data = await this.$axios.$get(api.getLinkInfo(url));
+  commit(types.LINK_SET_LINK_INFO, { url, data });
 }

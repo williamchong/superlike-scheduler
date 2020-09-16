@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Vue from 'vue';
-import { LinkState, LinkNode, LinkData } from './state';
+import { LinkState, LinkNode, LinkData, LinkInfo } from './state';
 import {
   LINK_SET_LINKS,
   LINK_ADD_LINK,
   LINK_UPDATE_LINK,
   LINK_REMOVE_LINK,
   LINK_CLEAR_FOR_LOGOUT,
+  LINK_SET_LINK_INFO,
 } from './mutation-types';
 
 function linkMapToArray(links: { [key: string]: LinkNode }) {
@@ -51,5 +52,11 @@ export default {
   [LINK_CLEAR_FOR_LOGOUT](state: LinkState) {
     state.linkMap = {};
     state.orderedLinks = [];
+  },
+  [LINK_SET_LINK_INFO](
+    state: LinkState,
+    { url, data }: { url: string; data: LinkInfo }
+  ) {
+    Vue.set(state.linkInfoMap, url, data);
   },
 };

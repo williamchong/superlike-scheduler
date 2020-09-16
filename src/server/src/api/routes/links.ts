@@ -14,7 +14,8 @@ router.get('/', async (req, res, next) => {
   try {
     const { user } = req.session;
     const query = await linkCollection
-      .where('user', '==', user)
+      .where('liker', '==', user)
+      .where('publishedTs', '==', 0)
       .orderBy('ts', 'desc')
       .get();
     res.json(query.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -31,11 +32,20 @@ router.put('/', async (req, res, next) => {
   setPrivateCacheHeader(res);
   try {
     const { user } = req.session;
-    const { sourceURL, nextId, prevId = null } = req.body;
+    const { sourceURL, likee, nextId = null, prevId = null } = req.body;
+    if (!likee) {
+      res.status(400).send('MISSING_LIKEE');
+      return;
+    }
+    if (!sourceURL) {
+      res.status(400).send('MISSING_URL');
+      return;
+    }
     const id = uuidv4();
     const payload = {
       id,
-      user,
+      liker: user,
+      likee,
       ts: Date.now(),
       sourceURL,
       nextId,

@@ -39,10 +39,11 @@ export default {
   },
   methods: {
     ...mapActions('link', ['fetchLinks', 'addNewLink']),
-    onSubmitNewLink(url) {
+    onSubmitNewLink({ url, likee }) {
       this.addNewLink({
         sourceURL: url,
-        prevId: this.getLastLink ? this.getLastLink.id : null;
+        likee,
+        prevId: this.getLastLink ? this.getLastLink.id : null,
         nextId: null,
       });
     },
