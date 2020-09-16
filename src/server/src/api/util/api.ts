@@ -28,6 +28,27 @@ const axios = Axios.create({
   httpsAgent: new _Agent({ keepAlive: true }),
 });
 
+async function sendAuthorizedRequestByToken(
+  accessToken: string,
+  refreshToken: string,
+  callback: Function
+) {
+  let Authorization = `Bearer ${accessToken}`;
+  try {
+    const res = await callback(Authorization);
+    return res;
+  } catch (err) {
+    if (!err.response || err.response.status !== 401) {
+      throw err;
+    }
+    const { data } = await apiRefreshToken(refreshToken);
+    if (!data.access_token) throw new Error('no access_token in reply');
+    const newAccessToken = data.access_token;
+    Authorization = `Bearer ${newAccessToken}`;
+    return callback(Authorization);
+  }
+}
+
 const apiRefreshAccessToken = async (req: Request) => {
   if (!req.session) return false;
   const { user } = req.session;
@@ -84,6 +105,34 @@ export const apiFetchUserSuperLikeStatus = (req: Request, tz = '8') =>
       headers: { Authorization },
     })
   );
+
+export const apiPostServerSuperLike = (
+  {
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  },
+  likee: string,
+  url: string,
+  tz = '8'
+) =>
+  sendAuthorizedRequestByToken(
+    accessToken,
+    refreshToken,
+    (Authorization: string) =>
+      axios.post(
+        `${LIKECOIN_API_BASE}/like/share/${likee}/?tz=${tz}&referrer=${encodeURIComponent(
+          url
+        )}`,
+        {},
+        {
+          headers: { Authorization },
+        }
+      )
+  );
+
 export const getOAuthURL = ({
   state,
   isRegister,

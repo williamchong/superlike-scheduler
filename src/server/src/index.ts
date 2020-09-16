@@ -6,6 +6,7 @@ import consola from 'consola';
 import { loadNuxt, build } from 'nuxt';
 
 import api from './api';
+import { superLikeCron } from './api/cron/superlike';
 
 const app = express();
 
@@ -30,6 +31,10 @@ async function start() {
 
   app.use(cookieParser());
   app.use('/api', api);
+  app.use('/cron', async (_, res) => {
+    await superLikeCron();
+    res.sendStatus(200);
+  });
   // Give nuxt middleware to express
   app.use(nuxt.render);
 

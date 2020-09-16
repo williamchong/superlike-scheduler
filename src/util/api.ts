@@ -1,4 +1,5 @@
-import { IS_TESTNET, LIKECOIN_API_BASE } from '@/constant';
+import { LIKECOIN_API_BASE } from '@/constant';
+
 export const getOAuthRegisterAPI = (from = '', referrer = '') =>
   `/api/users/register?from=${from}&referrer=${encodeURIComponent(referrer)}`;
 export const getOAuthLoginAPI = () => '/api/users/login';

@@ -47,6 +47,7 @@ router.put('/', async (req, res, next) => {
       liker: user,
       likee,
       ts: Date.now(),
+      publishedTs: 0,
       sourceURL,
       nextId,
       prevId,
