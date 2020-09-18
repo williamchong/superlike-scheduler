@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cd server && tsc-watch --onSuccess \"node ./lib/index.js\"",
-    "build": "yarn build:sever && yarn build:client",
+    "build": "yarn build:server && yarn build:client",
     "build:client": "nuxt-ts build",
     "build:server": "nuxt-ts build",
     "start": "nuxt-ts start",
