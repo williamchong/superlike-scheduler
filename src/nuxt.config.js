@@ -46,6 +46,12 @@ export default {
    ** Global CSS
    */
   css: [],
+  render: {
+    csp: {
+      enabled: true,
+      hashAlgorithm: 'sha256',
+    },
+  },
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
