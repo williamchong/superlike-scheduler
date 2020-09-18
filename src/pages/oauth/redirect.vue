@@ -1,7 +1,7 @@
 <template>
   <main class="redirect-page">
     <div class="my-48">
-      <h1 class="text-24">{{ 'RedirectPage' }}</h1>
+      <h1 class="text-24">{{ 'Redirecting...' }}</h1>
     </div>
   </main>
 </template>

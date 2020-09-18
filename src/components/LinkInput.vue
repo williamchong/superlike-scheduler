@@ -1,12 +1,14 @@
 <template>
   <v-card>
-    <v-img weight="200" height="200" :src="ogImage" />
-    <v-card-title>{{ title }}</v-card-title>
-    <v-card-subtitle>{{ user }}</v-card-subtitle>
+    <v-img v-if="ogImage" weight="200" height="200" :src="ogImage" />
+    <v-card-title v-if="title">{{ title }}</v-card-title>
+    <v-card-subtitle v-if="user">{{ user }}</v-card-subtitle>
     <v-form ref="form" @submit.prevent="onSubmit">
       <v-text-field
         v-model="url"
-        append-outer-icon="add"
+        placeholder="Add new Link"
+        hint="Enter URL"
+        append-outer-icon="mdi-plus"
         @click:append-outer="onClickIcon"
       />
     </v-form>

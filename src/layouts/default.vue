@@ -1,5 +1,9 @@
 <template>
-  <v-app>
+  <v-app dark>
+    <v-app-bar fixed app>
+      <v-toolbar-title v-text="'Super Like Sceduler'" />
+    </v-app-bar>
+
     <v-main>
       <v-container>
         <nuxt />
