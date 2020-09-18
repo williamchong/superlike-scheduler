@@ -15,8 +15,8 @@ export async function superLikeCron() {
     }
   });
   Object.values(userMap).forEach(async (u) => {
+    const { id, sourceURL, likee, liker, nextId } = u;
     try {
-      const { id, sourceURL, likee, liker, nextId } = u;
       const likerDoc = await userCollection.doc(liker).get();
       const likerData = likerDoc.data();
       if (!likerData) return;
@@ -36,7 +36,8 @@ export async function superLikeCron() {
       }
       await batch.commit();
     } catch (err) {
-      console.error(err);
+      const msg = (err.response && err.response.data) || err.message || err;
+      console.error(`${liker}: ${msg}`); // eslint-disable-line no-console
     }
   });
 }
