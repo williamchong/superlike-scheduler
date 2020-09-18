@@ -4,10 +4,13 @@
       <v-subheader>Next Super Like: {{ nextSuperLikeTime }}</v-subheader>
       <link-item
         v-for="(l, index) in getLinkList"
+        :id="l.id"
         :key="l.id"
         :url="l.sourceURL"
+        :likee="l.likee"
         :index="index"
         :super-like-ts="nextSuperLikeTs + 43200000 * index"
+        @remove="onRemoveLink"
       />
     </v-list>
     <link-input @submit="onSubmitNewLink" />
@@ -48,7 +51,7 @@ export default {
     this.fetchLinks();
   },
   methods: {
-    ...mapActions('link', ['fetchLinks', 'addNewLink']),
+    ...mapActions('link', ['fetchLinks', 'addNewLink', 'deleteLink']),
     onSubmitNewLink({ url, likee }) {
       this.addNewLink({
         sourceURL: url,
@@ -56,6 +59,9 @@ export default {
         prevId: this.getLastLink ? this.getLastLink.id : null,
         nextId: null,
       });
+    },
+    onRemoveLink({ id }) {
+      this.deleteLink({ id });
     },
   },
 };

@@ -38,14 +38,26 @@ export default {
   },
   [LINK_ADD_LINK](state: LinkState, link: LinkNode) {
     Vue.set(state.linkMap, link.id, link);
-    state.orderedLinks.push(link);
+    if (link.prevId) {
+      const prevNode = state.linkMap[link.prevId];
+      Vue.set(state.linkMap, link.prevId, { ...prevNode, nextId: link.id });
+    }
+    state.orderedLinks = linkMapToArray(state.linkMap);
   },
   [LINK_UPDATE_LINK](state: LinkState, data: LinkData) {
     const oldData = state.linkMap[data.id];
     Vue.set(state.linkMap, data.id, { ...oldData, ...data });
-    state.orderedLinks = linkMapToArray(state.linkMap);
   },
   [LINK_REMOVE_LINK](state: LinkState, id: string) {
+    const { nextId, prevId } = state.linkMap[id];
+    if (prevId) {
+      const prevNode = state.linkMap[prevId];
+      Vue.set(state.linkMap, prevId, { ...prevNode, nextId });
+    }
+    if (nextId) {
+      const nextNode = state.linkMap[nextId];
+      Vue.set(state.linkMap, nextId, { ...nextNode, prevId });
+    }
     Vue.delete(state.linkMap, id);
     state.orderedLinks = linkMapToArray(state.linkMap);
   },

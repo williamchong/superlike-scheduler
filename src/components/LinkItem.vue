@@ -1,16 +1,20 @@
 <template>
-  <v-list-item three-line target="_blank" :href="url">
+  <v-list-item three-line>
     {{ index }}
     <v-list-item-avatar>
       <v-img :src="ogImage" />
     </v-list-item-avatar>
 
     <v-list-item-content>
-      <v-list-item-title>{{ title }}</v-list-item-title>
+      <v-list-item-title>
+        <a target="_blank" :href="url">
+          {{ title }}
+        </a>
+      </v-list-item-title>
     </v-list-item-content>
     <v-list-item-content>
       <v-list-item-subtitle>
-        <a target="_blank" :src="`https://${LIKE_CO_URL_BASE}/${user}`">
+        <a target="_blank" :href="`${LIKE_CO_URL_BASE}/${user}`">
           {{ user || 'User not found' }}
         </a>
       </v-list-item-subtitle>
@@ -20,7 +24,7 @@
     </v-list-item-content>
 
     <v-list-item-icon>
-      <v-icon>mdi-calendar-remove</v-icon>
+      <v-btn icon @click="onRemove"><v-icon>mdi-calendar-remove</v-icon></v-btn>
     </v-list-item-icon>
   </v-list-item>
 </template>
@@ -32,6 +36,10 @@ import { LIKE_CO_URL_BASE } from '../constant';
 
 export default {
   props: {
+    id: {
+      type: String,
+      default: undefined,
+    },
     url: {
       type: String,
       default: undefined,
@@ -83,6 +91,9 @@ export default {
   },
   methods: {
     ...mapActions('link', ['fetchLinkInfo']),
+    onRemove() {
+      this.$emit('remove', { id: this.id });
+    },
   },
 };
 </script>
