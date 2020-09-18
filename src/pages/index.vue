@@ -4,6 +4,10 @@
       <div v-if="!isLoggedIn">
         <a :href="getOAuthLoginAPI">Login</a>
       </div>
+      <div v-else-if="!getUserInfo.isSuperLiker">
+        You are not eligible for
+        <a target="_blank" href="https://liker.land/in"> super like</a>.
+      </div>
       <div v-else>
         <link-time-table />
       </div>
