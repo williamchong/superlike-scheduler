@@ -12,7 +12,7 @@ export const actions = {
       }
     } catch (err) {
       if (err.response) {
-        if (err.response.status !== 404) {
+        if (err.response.status !== 401 || err.response.status !== 404) {
           console.error(err); // eslint-disable-line no-console
         }
       }
