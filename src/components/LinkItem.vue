@@ -1,15 +1,34 @@
 <template>
-  <v-card>
-    <v-img weight="200" height="200" :src="ogImage" />
-    <v-card-title>{{ title }}</v-card-title>
-    <v-card-subtitle>{{ user || 'User not found' }}</v-card-subtitle>
-    <v-card-subtitle>{{ url }}</v-card-subtitle>
-  </v-card>
+  <v-list-item three-line target="_blank" :href="url">
+    {{ index }}
+    <v-list-item-avatar>
+      <v-img :src="ogImage" />
+    </v-list-item-avatar>
+
+    <v-list-item-content>
+      <v-list-item-title>{{ title }}</v-list-item-title>
+    </v-list-item-content>
+    <v-list-item-content>
+      <v-list-item-subtitle>
+        <a target="_blank" :src="`https://${LIKE_CO_URL_BASE}/${user}`">
+          {{ user || 'User not found' }}
+        </a>
+      </v-list-item-subtitle>
+    </v-list-item-content>
+    <v-list-item-content>
+      Expected Super Like Time: {{ superLikeTime }}
+    </v-list-item-content>
+
+    <v-list-item-icon>
+      <v-icon>mdi-calendar-remove</v-icon>
+    </v-list-item-icon>
+  </v-list-item>
 </template>
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mapActions, mapGetters } from 'vuex';
+import { LIKE_CO_URL_BASE } from '../constant';
 
 export default {
   props: {
@@ -21,6 +40,19 @@ export default {
       type: String,
       default: undefined,
     },
+    index: {
+      type: Number,
+      default: undefined,
+    },
+    superLikeTs: {
+      type: Number,
+      default: undefined,
+    },
+  },
+  data() {
+    return {
+      LIKE_CO_URL_BASE,
+    };
   },
   computed: {
     ...mapGetters('link', ['getLinkInfo']),
@@ -32,6 +64,9 @@ export default {
     },
     ogImage() {
       return (this.getLinkInfo(this.url) || {}).image;
+    },
+    superLikeTime() {
+      return new Date(this.superLikeTs).toString();
     },
   },
   watch: {

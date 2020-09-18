@@ -47,10 +47,11 @@ router.get('/self', async (req, res, next) => {
         apiFetchUserProfile(req),
         apiFetchUserSuperLikeStatus(req, tz as string),
       ]);
-      const { isSuperLiker } = superLikeData;
+      const { isSuperLiker, nextSuperLikeTs } = superLikeData;
       res.json({
         user,
         isSuperLiker,
+        nextSuperLikeTs,
         ...data,
       });
       await userCollection.doc(user).update({
