@@ -20,7 +20,7 @@
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-content>
-      Expected Super Like Time: {{ superLikeTime }}
+      Expected timeslot: {{ superLikeTime }}
     </v-list-item-content>
 
     <v-list-item-icon>

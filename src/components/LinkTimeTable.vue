@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-list subheader>
-      <v-subheader>Next Super Like: {{ nextSuperLikeTime }}</v-subheader>
+      <v-subheader>
+        Next Super Like timeslot: {{ nextSuperLikeTime }}
+      </v-subheader>
       <link-item
         v-for="(l, index) in getLinkList"
         :id="l.id"
@@ -36,15 +38,17 @@ export default {
     },
     nextSuperLikeTs() {
       if (!this.isLoggedIn) return -1;
-      const ts = this.getUserInfo.nextSuperLikeTs;
-      if (!ts) return Date.now();
-      return ts;
+      const ts = this.getUserInfo.nextSuperLikeTs || Date.now();
+      const dateObj = new Date(ts);
+      dateObj.setHours(dateObj.getHours() < 12 ? 0 : 12);
+      dateObj.setMinutes(0);
+      dateObj.setSeconds(0);
+      dateObj.setMilliseconds(0);
+      return dateObj.getTime();
     },
     nextSuperLikeTime() {
       if (!this.isLoggedIn) return 'Invalid';
-      const ts = this.getUserInfo.nextSuperLikeTs;
-      if (!ts) return new Date().toString();
-      return new Date(ts).toString();
+      return new Date(this.nextSuperLikeTs).toString();
     },
   },
   mounted() {
