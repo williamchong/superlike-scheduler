@@ -15,13 +15,13 @@ export async function superLikeCron() {
     .get();
   const userMap: { [key: string]: any } = {};
   query.docs.forEach((d) => {
-    const { sourceURL, likee, liker, nextId } = d.data();
+    const { liker } = d.data();
     if (!userMap[liker]) {
-      userMap[liker] = { id: d.id, sourceURL, likee, liker, nextId };
+      userMap[liker] = { id: d.id, ...d.data() };
     }
   });
   Object.values(userMap).forEach(async (u) => {
-    const { id, sourceURL, likee, liker, nextId } = u;
+    const { id, sourceURL, likee, liker, nextId, parentSuperLikeId } = u;
     try {
       const likerDoc = await userCollection.doc(liker).get();
       const likerData = likerDoc.data();
@@ -38,8 +38,11 @@ export async function superLikeCron() {
             accessToken,
             refreshToken,
           },
-          likee,
-          sourceURL
+          {
+            likee,
+            referrer: sourceURL,
+            parentSuperLikeId,
+          }
         );
         const batch = db.batch();
         batch.update(linkCollection.doc(id), { publishedTs: Date.now() });

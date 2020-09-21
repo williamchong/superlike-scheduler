@@ -16,11 +16,13 @@ export async function addNewLink(
     likee,
     nextId = null,
     prevId = null,
+    parentSuperLikeId,
   }: {
     sourceURL: string;
     likee: string;
     nextId: string | null;
     prevId: string | null;
+    parentSuperLikeId?: string;
   }
 ) {
   const { id } = await this.$axios.$put(api.getLinks(), {
@@ -28,6 +30,7 @@ export async function addNewLink(
     likee,
     nextId,
     prevId,
+    parentSuperLikeId,
   });
   const payload = {
     id,
@@ -35,6 +38,7 @@ export async function addNewLink(
     sourceURL,
     nextId,
     prevId,
+    parentSuperLikeId,
   };
   commit(types.LINK_ADD_LINK, payload);
   return payload;

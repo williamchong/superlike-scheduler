@@ -133,19 +133,27 @@ export const apiPostServerSuperLike = (
     accessToken: string;
     refreshToken: string;
   },
-  likee: string,
-  url: string,
-  tz = '8'
+  {
+    likee,
+    referrer,
+    parentSuperLikeId,
+    tz = '8',
+  }: {
+    likee: string;
+    referrer: string;
+    parentSuperLikeId?: string;
+    tz?: string;
+  }
 ) =>
   sendAuthorizedRequestByToken(
     accessToken,
     refreshToken,
     (Authorization: string) =>
       axios.post(
-        `${LIKECOIN_API_BASE}/like/share/${likee}/?tz=${tz}&referrer=${encodeURIComponent(
-          url
+        `${LIKECOIN_API_BASE}/like/share/${likee}/?referrer=${encodeURIComponent(
+          referrer
         )}`,
-        {},
+        { parentSuperLikeId, tz },
         {
           headers: { Authorization },
         }

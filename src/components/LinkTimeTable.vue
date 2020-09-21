@@ -62,12 +62,13 @@ export default {
       'updateLink',
       'deleteLink',
     ]),
-    async onSubmitNewLink({ url, likee }) {
+    async onSubmitNewLink({ url, likee, parentSuperLikeId }) {
       await this.addNewLink({
         sourceURL: url,
         likee,
         prevId: this.getLastLink ? this.getLastLink.id : null,
         nextId: null,
+        parentSuperLikeId,
       });
       this.$refs.linkInput.clearInput();
     },

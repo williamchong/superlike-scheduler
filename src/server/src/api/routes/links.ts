@@ -32,7 +32,13 @@ router.put('/', async (req, res, next) => {
   setPrivateCacheHeader(res);
   try {
     const { user } = req.session;
-    const { sourceURL, likee, nextId = null, prevId = null } = req.body;
+    const {
+      sourceURL,
+      likee,
+      parentSuperLikeId,
+      nextId = null,
+      prevId = null,
+    } = req.body;
     if (!likee) {
       res.status(400).send('MISSING_LIKEE');
       return;
@@ -52,6 +58,7 @@ router.put('/', async (req, res, next) => {
       sourceURL,
       nextId,
       prevId,
+      parentSuperLikeId,
     };
     const batch = db.batch();
     batch.create(linkCollection.doc(id), payload);
