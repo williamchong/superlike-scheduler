@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-app-bar fixed app>
-      <v-toolbar-title v-text="'Super Like Sceduler'" />
+      <v-toolbar-title v-text="'Super Like Scheduler'" />
     </v-app-bar>
 
     <v-main>
