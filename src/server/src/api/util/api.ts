@@ -106,6 +106,25 @@ export const apiFetchUserSuperLikeStatus = (req: Request, tz = '8') =>
     })
   );
 
+export const apiGetServerUserSuperLikeStatus = (
+  {
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  },
+  tz = '8'
+) =>
+  sendAuthorizedRequestByToken(
+    accessToken,
+    refreshToken,
+    (Authorization: string) =>
+      axios.get(`${LIKECOIN_API_BASE}/like/share/self?tz=${tz}`, {
+        headers: { Authorization },
+      })
+  );
+
 export const apiPostServerSuperLike = (
   {
     accessToken,

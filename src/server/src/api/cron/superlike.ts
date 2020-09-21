@@ -1,10 +1,16 @@
 import { db, userCollection, linkCollection } from '../util/firebase';
-import { apiPostServerSuperLike } from '../util/api';
+import {
+  apiPostServerSuperLike,
+  apiGetServerUserSuperLikeStatus,
+} from '../util/api';
 
 export async function superLikeCron() {
+  const timeNow = Date.now();
   const query = await linkCollection
     .where('prevId', '==', null)
     .where('publishedTs', '==', 0)
+    .where('publishAfter', '<=', timeNow)
+    .orderBy('publishAfter')
     .orderBy('ts')
     .get();
   const userMap: { [key: string]: any } = {};
@@ -21,20 +27,29 @@ export async function superLikeCron() {
       const likerData = likerDoc.data();
       if (!likerData) return;
       const { accessToken, refreshToken } = likerData;
-      await apiPostServerSuperLike(
-        {
-          accessToken,
-          refreshToken,
-        },
-        likee,
-        sourceURL
-      );
-      const batch = db.batch();
-      batch.update(linkCollection.doc(id), { publishedTs: Date.now() });
-      if (nextId) {
-        batch.update(linkCollection.doc(nextId), { prevId: null });
+      const { data: superLikeData } = await apiGetServerUserSuperLikeStatus({
+        accessToken,
+        refreshToken,
+      });
+      const { canSuperLike, nextSuperLikeTs } = superLikeData;
+      if (canSuperLike) {
+        await apiPostServerSuperLike(
+          {
+            accessToken,
+            refreshToken,
+          },
+          likee,
+          sourceURL
+        );
+        const batch = db.batch();
+        batch.update(linkCollection.doc(id), { publishedTs: Date.now() });
+        if (nextId) {
+          batch.update(linkCollection.doc(nextId), { prevId: null });
+        }
+        await batch.commit();
+      } else if (nextSuperLikeTs) {
+        linkCollection.doc(id).update({ publishAfter: nextSuperLikeTs });
       }
-      await batch.commit();
     } catch (err) {
       const msg = (err.response && err.response.data) || err.message || err;
       console.error(`${liker}: ${msg}`); // eslint-disable-line no-console
