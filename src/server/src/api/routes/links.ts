@@ -107,6 +107,7 @@ router.patch('/:id', async (req, res, next) => {
         batch.update(linkCollection.doc(nextId), { prevId: id });
       }
     }
+    batch.update(linkCollection.doc(id), { nextId, prevId });
     await batch.commit();
     res.sendStatus(200);
   } catch (err) {

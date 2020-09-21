@@ -11,6 +11,11 @@ import {
   LINK_SET_LINK_INFO,
 } from './mutation-types';
 
+function updateObject(object, id, payload) {
+  const oldData = object[id];
+  Vue.set(object, id, { ...oldData, ...payload });
+}
+
 function linkMapToArray(links: { [key: string]: LinkNode }) {
   const head = Object.values(links).find((l) => !l.prevId);
   let next;
@@ -45,18 +50,27 @@ export default {
     state.orderedLinks = linkMapToArray(state.linkMap);
   },
   [LINK_UPDATE_LINK](state: LinkState, data: LinkData) {
-    const oldData = state.linkMap[data.id];
-    Vue.set(state.linkMap, data.id, { ...oldData, ...data });
+    const { id, nextId, prevId } = data;
+    const oldData = state.linkMap[id];
+    const { prevId: oldPrevId, nextId: oldNextId } = oldData;
+    if (oldNextId) {
+      updateObject(state.linkMap, oldNextId, { prevId: oldPrevId });
+    }
+    if (prevId) updateObject(state.linkMap, prevId, { nextId: id });
+    if (oldPrevId) {
+      updateObject(state.linkMap, oldPrevId, { nextId: oldNextId });
+    }
+    if (nextId) updateObject(state.linkMap, nextId, { prevId: id });
+    updateObject(state.linkMap, data.id, data);
+    state.orderedLinks = linkMapToArray(state.linkMap);
   },
   [LINK_REMOVE_LINK](state: LinkState, id: string) {
     const { nextId, prevId } = state.linkMap[id];
     if (prevId) {
-      const prevNode = state.linkMap[prevId];
-      Vue.set(state.linkMap, prevId, { ...prevNode, nextId });
+      updateObject(state.linkMap, prevId, { nextId })
     }
     if (nextId) {
-      const nextNode = state.linkMap[nextId];
-      Vue.set(state.linkMap, nextId, { ...nextNode, prevId });
+      updateObject(state.linkMap, nextId, { prevId })
     }
     Vue.delete(state.linkMap, id);
     state.orderedLinks = linkMapToArray(state.linkMap);

@@ -12,6 +12,7 @@
         :likee="l.likee"
         :index="index"
         :super-like-ts="nextSuperLikeTs + 43200000 * index"
+        @moveToTop="onMoveToTop"
         @remove="onRemoveLink"
       />
     </v-list>
@@ -32,7 +33,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['getUserId', 'getUserInfo']),
-    ...mapGetters('link', ['getLinkList', 'getLastLink']),
+    ...mapGetters('link', ['getLinkList', 'getFirstLink', 'getLastLink']),
     isLoggedIn() {
       return this.getUserId;
     },
@@ -55,7 +56,12 @@ export default {
     this.fetchLinks();
   },
   methods: {
-    ...mapActions('link', ['fetchLinks', 'addNewLink', 'deleteLink']),
+    ...mapActions('link', [
+      'fetchLinks',
+      'addNewLink',
+      'updateLink',
+      'deleteLink',
+    ]),
     async onSubmitNewLink({ url, likee }) {
       await this.addNewLink({
         sourceURL: url,
@@ -67,6 +73,10 @@ export default {
     },
     onRemoveLink({ id }) {
       this.deleteLink({ id });
+    },
+    onMoveToTop({ id }) {
+      if (!this.getFirstLink.id || id === this.getFirstLink.id) return;
+      this.updateLink({ id, prevId: null, nextId: this.getFirstLink.id });
     },
   },
 };

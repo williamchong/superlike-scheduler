@@ -22,7 +22,11 @@
     <v-list-item-content>
       Expected timeslot: {{ superLikeTime }}
     </v-list-item-content>
-
+    <v-list-item-icon>
+      <v-btn icon @click="onMoveToTop">
+        <v-icon>mdi-format-vertical-align-top</v-icon>
+      </v-btn>
+    </v-list-item-icon>
     <v-list-item-icon>
       <v-btn icon @click="onRemove"><v-icon>mdi-calendar-remove</v-icon></v-btn>
     </v-list-item-icon>
@@ -91,6 +95,9 @@ export default {
   },
   methods: {
     ...mapActions('link', ['fetchLinkInfo']),
+    onMoveToTop() {
+      this.$emit('moveToTop', { id: this.id });
+    },
     onRemove() {
       this.$emit('remove', { id: this.id });
     },
