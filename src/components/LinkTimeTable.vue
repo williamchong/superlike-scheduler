@@ -15,7 +15,7 @@
         @remove="onRemoveLink"
       />
     </v-list>
-    <link-input @submit="onSubmitNewLink" />
+    <link-input ref="linkInput" @submit="onSubmitNewLink" />
   </div>
 </template>
 
@@ -56,13 +56,14 @@ export default {
   },
   methods: {
     ...mapActions('link', ['fetchLinks', 'addNewLink', 'deleteLink']),
-    onSubmitNewLink({ url, likee }) {
-      this.addNewLink({
+    async onSubmitNewLink({ url, likee }) {
+      await this.addNewLink({
         sourceURL: url,
         likee,
         prevId: this.getLastLink ? this.getLastLink.id : null,
         nextId: null,
       });
+      this.$refs.linkInput.clearInput();
     },
     onRemoveLink({ id }) {
       this.deleteLink({ id });

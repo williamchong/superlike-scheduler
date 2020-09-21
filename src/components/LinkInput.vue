@@ -75,6 +75,9 @@ export default {
     onClickIcon() {
       this.onSubmit();
     },
+    clearInput() {
+      this.url = '';
+    },
   },
 };
 </script>
