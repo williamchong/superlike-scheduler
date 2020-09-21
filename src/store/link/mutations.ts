@@ -44,8 +44,10 @@ export default {
   [LINK_ADD_LINK](state: LinkState, link: LinkNode) {
     Vue.set(state.linkMap, link.id, link);
     if (link.prevId) {
-      const prevNode = state.linkMap[link.prevId];
-      Vue.set(state.linkMap, link.prevId, { ...prevNode, nextId: link.id });
+      updateObject(state.linkMap, link.prevId, { nextId: link.id });
+    }
+    if (link.nextId) {
+      updateObject(state.linkMap, link.prevId, { nextId: link.id });
     }
     state.orderedLinks = linkMapToArray(state.linkMap);
   },
