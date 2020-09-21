@@ -11,4 +11,21 @@ export const LIKE_CO_URL_BASE = IS_TESTNET
   ? 'https://rinkeby.like.co'
   : 'https://like.co';
 
+export const SUPERLIKE_HOSTNAME = IS_TESTNET
+  ? 's.rinkeby.like.co'
+  : 's.like.co';
+
 export const AUTH_COOKIE_NAME = '__session';
+
+export const QUERY_STRING_TO_REMOVE = [
+  'fbclid',
+  'gclid',
+  'gi',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+  '__cf_chl_captcha_tk__',
+  '__cf_chl_jschl_tk__',
+];

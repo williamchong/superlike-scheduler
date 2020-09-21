@@ -9,4 +9,5 @@ export const getLogoutAPI = () => `/api/users/logout`;
 export const getLinks = () => `/api/links`;
 export const getLinkInfo = (url) =>
   `${LIKECOIN_API_BASE}/like/info?url=${encodeURIComponent(url)}`;
+export const getSuperLikenfo = (id) => `${LIKECOIN_API_BASE}/like/share/${id}`;
 export const getLinkById = (id) => `/api/links/${id}`;
