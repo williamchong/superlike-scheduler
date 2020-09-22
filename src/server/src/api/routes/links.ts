@@ -35,7 +35,7 @@ router.put('/', async (req, res, next) => {
     const {
       sourceURL,
       likee,
-      parentSuperLikeId,
+      parentSuperLikeId = null,
       nextId = null,
       prevId = null,
     } = req.body;

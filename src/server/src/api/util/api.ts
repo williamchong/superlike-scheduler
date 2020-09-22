@@ -153,7 +153,7 @@ export const apiPostServerSuperLike = (
         `${LIKECOIN_API_BASE}/like/share/${likee}/?referrer=${encodeURIComponent(
           referrer
         )}`,
-        { parentSuperLikeId, tz },
+        { parentSuperLikeID: parentSuperLikeId, tz },
         {
           headers: { Authorization },
         }
