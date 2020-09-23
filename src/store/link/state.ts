@@ -9,6 +9,7 @@ export type LinkNode = {
   ts: number;
   likee: string;
   sourceURL: string;
+  parentSuperLikeId?: string;
   nextId: string | null;
   prevId: string | null;
 };
