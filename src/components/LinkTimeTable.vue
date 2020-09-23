@@ -11,7 +11,7 @@
         :url="l.sourceURL"
         :likee="l.likee"
         :index="index"
-        :super-like-ts="nextSuperLikeTs + 43200000 * index"
+        :super-like-ts="nextSuperLikeTs + TWELVE_HOURS_IN_MS * index"
         @moveToTop="onMoveToTop"
         @remove="onRemoveLink"
       />
@@ -26,10 +26,17 @@ import { mapActions, mapGetters } from 'vuex';
 import LinkItem from './LinkItem';
 import LinkInput from './LinkInput';
 
+const TWELVE_HOURS_IN_MS = 43200000;
+
 export default {
   components: {
     LinkItem,
     LinkInput,
+  },
+  data() {
+    return {
+      TWELVE_HOURS_IN_MS,
+    };
   },
   computed: {
     ...mapGetters('user', ['getUserId', 'getUserInfo']),

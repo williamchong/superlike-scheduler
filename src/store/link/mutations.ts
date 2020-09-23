@@ -18,17 +18,17 @@ function updateObject(object, id, payload) {
 
 function linkMapToArray(links: { [key: string]: LinkNode }) {
   const head = Object.values(links).find((l) => !l.prevId);
-  let next;
+  let nextId;
   const output: LinkNode[] = [];
   if (head) {
     output.push(head);
-    next = head.nextId;
+    nextId = head.nextId;
   }
-  while (next) {
-    const current = links[next];
+  while (nextId) {
+    const current = links[nextId];
     if (!current) break;
     output.push(current);
-    next = current.nextId;
+    nextId = current.nextId;
   }
   return output;
 }
