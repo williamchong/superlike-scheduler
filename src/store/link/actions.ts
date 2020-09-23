@@ -25,7 +25,7 @@ export async function addNewLink(
     parentSuperLikeId?: string;
   }
 ) {
-  const { id } = await this.$axios.$put(api.getLinks(), {
+  const { id } = await this.$axios.$post(api.getLinks(), {
     sourceURL,
     likee,
     nextId,

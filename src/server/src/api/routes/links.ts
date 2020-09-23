@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   if (!req.session?.user) {
     res.sendStatus(401);
     return;
