@@ -8,3 +8,7 @@ if (!currentFunction || currentFunction === 'ssrapp') {
 if (!currentFunction || currentFunction === 'apiHttp') {
   exports.apiHttp = require('./apiHttp');
 }
+
+if (!currentFunction || currentFunction === 'superLikeCron') {
+  exports.superLikeCron = require('./superLikeCron');
+}

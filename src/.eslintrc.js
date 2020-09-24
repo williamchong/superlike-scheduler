@@ -23,13 +23,15 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
+        vue: 'never',
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'warn',
   },
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
       },
     },
   },

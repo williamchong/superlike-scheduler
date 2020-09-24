@@ -10,6 +10,7 @@
     ],
     "esModuleInterop": true,
     "allowJs": true,
+    "noImplicitAny": false,
     // "checkJs": true,
     "sourceMap": true,
     "strict": true,
@@ -26,7 +27,8 @@
     },
     "types": [
       "@types/node",
-      "@nuxt/types"
+      "@nuxt/types",
+      "@nuxtjs/axios"
     ]
   },
   "exclude": [
